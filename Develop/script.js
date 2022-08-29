@@ -19,6 +19,8 @@ function generatePassword() {
   checkCharacterType(isSpecial, "isSpecial");
   let isNumber = prompt("Please type Y if you want numeric numbers in your password, or N if you don't");
   checkCharacterType(isNumber, "isNumber");
+
+  return generatePWString();
 }
 
 // Get the required length from user, check the input and change the corresponding field in var criteria
@@ -46,13 +48,45 @@ function checkCharacterType(input, type) {
     checkCharacterType(prompt("Your input is illegal, please try again (please enter Y or N)"));
   }
   else {
-    if (input == "Y") {
-      type == "isUpper" ? criteria.isUpper = true :
-      type == "isLower" ? criteria.isLower = true :
-      type == "isSpecial" ? criteria.isSpecial = true :
-      criteria.isNumber = true;
-    }
+    input == "Y" ? setCharTypes(type, true) : setCharTypes(type, false);
   }
+}
+
+// Set the character types in the var criteria field
+function setCharTypes(type, bool) {
+  type == "isUpper" ? criteria.isUpper = bool :
+  type == "isLower" ? criteria.isLower = bool :
+  type == "isSpecial" ? criteria.isSpecial = bool :
+  criteria.isNumber = bool;
+}
+
+// Generating the string for the password according to the recorded criteria 
+function generatePWString() {
+  let result = "";
+  let characters = "";
+  if (criteria.isUpper == true) {
+    characters = characters.concat("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  }
+  if (criteria.isLower == true) {
+    characters = characters.concat("abcdefghijklmnopqrstuvwxyz");
+  }
+  if (criteria.isSpecial == true) {
+    characters = characters.concat(" !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
+  }
+  if (criteria.isNumber == true) {
+    characters = characters.concat("0123456789");
+  }
+
+  // Check if all the criteria are false, if so alert the user
+  if (criteria.isUpper == false && criteria.isLower == false && criteria.isSpecial == false && criteria.isNumber == false) {
+    alert("You chose to exclude all the password criteria! Please press the generate button to try again").close();
+  }
+
+  for (var i = 0; i < criteria.length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return result;
 }
 
 // Get references to the #generate element
