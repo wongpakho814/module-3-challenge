@@ -11,7 +11,14 @@ var criteria = {
 function generatePassword() {
   let length = prompt("Please select a length from 8 to 128 characters for your password!");
   checkLength(length);
-
+  let isUpper = prompt("Please type Y if you want upper case letters in your password, or N if you don't");
+  checkCharacterType(isUpper, "isUpper");
+  let isLower = prompt("Please type Y if you want lower case letters in your password, or N if you don't");
+  checkCharacterType(isLower, "isLower");
+  let isSpecial = prompt("Please type Y if you want special letters in your password, or N if you don't");
+  checkCharacterType(isSpecial, "isSpecial");
+  let isNumber = prompt("Please type Y if you want numeric numbers in your password, or N if you don't");
+  checkCharacterType(isNumber, "isNumber");
 }
 
 // Get the required length from user, check the input and change the corresponding field in var criteria
@@ -27,6 +34,24 @@ function checkLength(length) {
   // If input is valid, update the length field in var criteria
   else {
     criteria.length = length;
+  }
+}
+
+// Get the character type criteria from user, check the input and change the corresponding field in var criteria
+function checkCharacterType(input, type) {
+  if (input == null) {
+    alert("Please click the generate button to re-enter the criteria").close();
+  }
+  else if (input !== "Y" && input !== "N") {
+    checkCharacterType(prompt("Your input is illegal, please try again (please enter Y or N)"));
+  }
+  else {
+    if (input == "Y") {
+      type == "isUpper" ? criteria.isUpper = true :
+      type == "isLower" ? criteria.isLower = true :
+      type == "isSpecial" ? criteria.isSpecial = true :
+      criteria.isNumber = true;
+    }
   }
 }
 
